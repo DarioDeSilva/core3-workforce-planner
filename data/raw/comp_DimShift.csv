@@ -1,0 +1,4 @@
+shift_code,shift_name,shift_sequence
+OPEN,Opening,1
+MID,Midday,2
+EVE,Evening,3

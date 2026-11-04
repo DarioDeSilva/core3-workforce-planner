@@ -1,0 +1,92 @@
+table_or_object,column,data_type,value_category,purpose
+comp.DimShift,shift_code,NVARCHAR(10),Key,"Shift identifier: OPEN, MID, EVE. PK."
+comp.DimShift,shift_name,NVARCHAR(50),Assumed,"Display name: Opening, Midday, Evening."
+comp.DimShift,shift_sequence,TINYINT,Assumed,Sort order within the day (1-3).
+comp.ShiftDefinition,dept_id,SMALLINT,Key,Department (FK API.DimDepartment). PK part.
+comp.ShiftDefinition,day_type,NVARCHAR(10),Key,"Weekday, Saturday or Sunday (shift times differ by day type). PK part. Holidays use the Weekday definition unless the warehouse is closed."
+comp.ShiftDefinition,shift_code,NVARCHAR(10),Key,FK comp.DimShift. PK part.
+comp.ShiftDefinition,shift_start_time,TIME(0),Assumed,Block start time. NULL when the department is closed in that block.
+comp.ShiftDefinition,shift_end_time,TIME(0),Assumed,Block end time. NULL when closed.
+comp.ShiftDefinition,paid_hours,"DECIMAL(4,2)",Assumed,Paid hours per employee assigned to the block (= shift length used for all cost and capacity math). 0 when closed.
+comp.ShiftDefinition,is_open,BIT,Assumed,1 if the department operates in this block on this day type.
+comp.ShiftDefinition,min_staff,SMALLINT,Assumed,Minimum employees whenever the block is open (safety / coverage floor; Pharmacy = 1 pharmacist + 1 technician).
+comp.ShiftDefinition,value_type,NVARCHAR(30),Label,Always 'Assumed'.
+comp.ShiftDefinition,notes,NVARCHAR(400),Label,Free-text clarification.
+comp.LaborStandard,dept_id,SMALLINT,Key,"Department. PK, FK API.DimDepartment."
+comp.LaborStandard,workload_unit_definition,NVARCHAR(400),Assumed,What one demand unit means for the department. Units are scaled proxies and are NOT comparable across departments.
+comp.LaborStandard,labor_hours_per_workload_unit,"DECIMAL(6,3)",Assumed,Engineered standard: labor hours per demand unit at 100% productive time. Required hours = demand x standard / target utilization (teams choose utilization).
+comp.LaborStandard,standard_basis,NVARCHAR(400),Label,How to interpret the standard.
+comp.LaborStandard,value_type,NVARCHAR(30),Label,Always 'Assumed'.
+comp.ServiceMetricDefinition,metric_code,NVARCHAR(30),Key,"FE_CHECKOUT_WAIT, MS_REPLEN_RESPONSE, RX_WAIT. PK."
+comp.ServiceMetricDefinition,dept_id,SMALLINT,Key,Department measured by the metric (one metric per department). FK API.DimDepartment.
+comp.ServiceMetricDefinition,metric_name,NVARCHAR(100),Assumed,Readable metric name.
+comp.ServiceMetricDefinition,unit_of_measure,NVARCHAR(20),Assumed,minutes.
+comp.ServiceMetricDefinition,target_value,"DECIMAL(8,2)",Assumed,"Service threshold; a block meets target when metric_value <= target_value. FE 5, Merchandising 60, Pharmacy 20 minutes."
+comp.ServiceMetricDefinition,better_direction,NVARCHAR(10),Assumed,'Lower' for all three metrics.
+comp.ServiceMetricDefinition,definition,NVARCHAR(600),Label,Precise metric definition.
+comp.ServiceMetricDefinition,value_type,NVARCHAR(30),Label,Always 'Assumed'.
+comp.LaborCostAssumption,store_id,SMALLINT,Key,"Warehouse. PK part, FK API.DimStore."
+comp.LaborCostAssumption,dept_id,SMALLINT,Key,"Department. PK part, FK API.DimDepartment."
+comp.LaborCostAssumption,base_hourly_wage,"DECIMAL(8,2)",Assumed,Mock base wage = department base x warehouse wage factor (1.00 / 1.04 / 1.02 for warehouses 1 / 2 / 4). Pharmacy is a blended pharmacist/technician rate.
+comp.LaborCostAssumption,regular_burden_pct,"DECIMAL(5,4)",Assumed,Payroll taxes + benefits applied to regular hours (25%).
+comp.LaborCostAssumption,loaded_regular_hourly_cost,"DECIMAL(8,2)",Derived,base_hourly_wage x (1 + regular_burden_pct). Use for regular and cross-trained flex hours.
+comp.LaborCostAssumption,overtime_multiplier,"DECIMAL(4,2)",Assumed,Overtime pay multiplier (1.5).
+comp.LaborCostAssumption,overtime_burden_pct,"DECIMAL(5,4)",Assumed,Payroll taxes on overtime hours (10%); benefits are not re-applied to overtime.
+comp.LaborCostAssumption,loaded_overtime_hourly_cost,"DECIMAL(8,2)",Derived,base_hourly_wage x overtime_multiplier x (1 + overtime_burden_pct). About 32% above the loaded regular rate.
+comp.LaborCostAssumption,weekly_overtime_threshold_hours,"DECIMAL(5,2)",Assumed,"Informational (40). Data is aggregated, so overtime is modelled at the block level via max_overtime_employees rather than per person."
+comp.LaborCostAssumption,effective_start_date,DATE,Assumed,Rate effective date (2026-01-01).
+comp.LaborCostAssumption,value_type,NVARCHAR(30),Label,Always 'Assumed'.
+comp.LaborCostAssumption,notes,NVARCHAR(600),Label,Formula and caveats.
+comp.Scenario,scenario_id,TINYINT,Key,"0 HIST, 1 BASE, 2 PEAK, 3 DISRUPT. PK."
+comp.Scenario,scenario_code,NVARCHAR(20),Key,Short unique code.
+comp.Scenario,scenario_name,NVARCHAR(100),Label,Readable name.
+comp.Scenario,scenario_type,NVARCHAR(20),Label,'Historical' or 'Planning'.
+comp.Scenario,period_start,DATE,Label,First date covered.
+comp.Scenario,period_end,DATE,Label,Last date covered.
+comp.Scenario,description,NVARCHAR(1000),Label,What the scenario represents and how to use it.
+comp.Scenario,value_type,NVARCHAR(30),Label,Historical / Forecast / Scenario-generated.
+comp.FactShiftDemand,store_id / dept_id / day_date / shift_code,(keys),Key,"Grain: warehouse x department x date x shift (2026-01-01 to 2026-02-11). PK. (store, dept, date) is an FK to API.FactDailyTrainingLaborOutput."
+comp.FactShiftDemand,day_type,NVARCHAR(10),Derived,Weekday/Saturday/Sunday from the calendar; with dept and shift it is the FK to comp.ShiftDefinition.
+comp.FactShiftDemand,is_open,BIT,Derived,1 if the department operated in the block (0 for closed pharmacy blocks and for the closed New Year's Day).
+comp.FactShiftDemand,demand_units,"DECIMAL(14,4)",Historical,Actual workload in the block. The three shifts of a day sum exactly to API.FactDailyTrainingLaborOutput.transaction_count_proxy.
+comp.FactShiftDemand,share_of_day,"DECIMAL(6,4)",Derived,demand_units / daily total (the observed within-day demand mix).
+comp.FactShiftDemand,value_type,NVARCHAR(30),Label,Always 'Historical'.
+comp.FactShiftSchedule,store_id / dept_id / day_date / shift_code,(keys),Key,"FKs to DimStore, DimDepartment, DimCalendarDay, DimShift."
+comp.FactShiftSchedule,schedule_type,NVARCHAR(10),Key,'Actual' = historical schedule as run (2026-01-01 to 02-11). 'Draft' = management's current plan for the planning week (02-12 to 02-18). PK part.
+comp.FactShiftSchedule,scheduled_employees,SMALLINT,Historical,Employees scheduled for the block (Actual: historical; Draft: current plan - the comparison point for recommendations).
+comp.FactShiftSchedule,paid_hours_per_employee,"DECIMAL(4,2)",Assumed,Copied from comp.ShiftDefinition.paid_hours for convenience.
+comp.FactShiftSchedule,scheduled_labor_hours,"DECIMAL(8,2)",Derived,scheduled_employees x paid_hours_per_employee.
+comp.FactShiftSchedule,callout_employees,SMALLINT,Historical,Scheduled employees who called out (Actual only; NULL for Draft).
+comp.FactShiftSchedule,backfill_employees,SMALLINT,Historical,Callouts replaced with someone working overtime (Actual only).
+comp.FactShiftSchedule,worked_employees,SMALLINT,Historical,scheduled - callouts + backfill. The staffing that actually served demand (drives the service outcome).
+comp.FactShiftSchedule,worked_regular_employees,SMALLINT,Historical,Worked employees paid at the regular rate (never more than available_regular_employees).
+comp.FactShiftSchedule,worked_overtime_employees,SMALLINT,Historical,"Worked employees paid at the overtime rate (scheduled beyond regular availability, plus backfills)."
+comp.FactShiftSchedule,worked_labor_hours,"DECIMAL(8,2)",Derived,worked_employees x paid hours.
+comp.FactShiftSchedule,worked_regular_hours,"DECIMAL(8,2)",Derived,worked_regular_employees x paid hours.
+comp.FactShiftSchedule,worked_overtime_hours,"DECIMAL(8,2)",Derived,worked_overtime_employees x paid hours.
+comp.FactShiftSchedule,value_type,NVARCHAR(30),Label,'Historical' or 'Planned (current draft)'.
+comp.FactShiftAvailability,scenario_id,TINYINT,Key,"0 = historical availability; 1/2/3 = planning-week availability under BASE/PEAK/DISRUPT. PK part, FK comp.Scenario."
+comp.FactShiftAvailability,store_id / dept_id / day_date / shift_code,(keys),Key,"FKs to DimStore, DimDepartment, DimCalendarDay, DimShift."
+comp.FactShiftAvailability,available_regular_employees,SMALLINT,Historical / Forecast / Scenario-generated,"Qualified employees available at straight time for the block (net of PTO, illness, weekly-hours limits). Aggregated - no employee-level records."
+comp.FactShiftAvailability,max_overtime_employees,SMALLINT,Historical / Forecast / Scenario-generated,Additional employees who could work the block at the overtime rate.
+comp.FactShiftAvailability,cross_trained_flex_employees,SMALLINT,Historical / Forecast / Scenario-generated,Employees from the partner department (Front End <-> Merchandising) qualified to cover this block at the regular rate. Using one removes one from the partner department. Always 0 for Pharmacy.
+comp.FactShiftAvailability,available_regular_hours,"DECIMAL(8,2)",Derived,available_regular_employees x paid hours.
+comp.FactShiftAvailability,max_overtime_hours,"DECIMAL(8,2)",Derived,max_overtime_employees x paid hours.
+comp.FactShiftAvailability,availability_note,NVARCHAR(300),Label,"Why availability is reduced (PTO, flu season, holiday PTO, scenario disruption). NULL when nothing notable."
+comp.FactShiftAvailability,value_type,NVARCHAR(30),Label,"'Historical' (scenario 0), 'Forecast' (BASE), 'Scenario-generated' (PEAK, DISRUPT)."
+comp.FactShiftServiceLevel,store_id / dept_id / day_date / shift_code,(keys),Key,PK; FK to comp.FactShiftDemand.
+comp.FactShiftServiceLevel,metric_code,NVARCHAR(30),Key,FK comp.ServiceMetricDefinition (department-specific metric).
+comp.FactShiftServiceLevel,metric_value,"DECIMAL(8,1)",Historical,"Simulated observed service outcome for the block, in minutes. Worse when demand is high relative to worked labor hours, and rises steeply as utilization approaches 100%. NULL when closed."
+comp.FactShiftServiceLevel,target_value,"DECIMAL(8,2)",Assumed,Copied from comp.ServiceMetricDefinition.
+comp.FactShiftServiceLevel,met_target,BIT,Derived,1 if metric_value <= target_value; NULL when closed.
+comp.FactShiftServiceLevel,value_type,NVARCHAR(30),Label,Always 'Historical'.
+comp.ScenarioDemandAdjustment,scenario_id / store_id / dept_id / day_date / shift_code,(keys),Key,One row per scenario (1-3) x planning-week block. PK; FKs to Scenario and dimensions.
+comp.ScenarioDemandAdjustment,demand_multiplier,"DECIMAL(5,2)",Scenario-generated,Multiply YOUR baseline forecast by this value. BASE and DISRUPT = 1.00; PEAK = 1.05-1.30 on Feb 13-15 for promotion/storm traffic.
+comp.ScenarioDemandAdjustment,adjustment_reason,NVARCHAR(300),Label,Driver of the multiplier.
+comp.ScenarioDemandAdjustment,value_type,NVARCHAR(30),Label,'Forecast' (BASE) or 'Scenario-generated'.
+comp.v_ShiftHistory,(view),VIEW,Derived,"One row per historical block joining demand, calendar/holiday/weather/promotion context, schedule, callouts, availability, cost and service. New derived column: labor_cost = worked_regular_hours x loaded regular rate + worked_overtime_hours x loaded overtime rate. Other columns are renamed copies: daily_demand_units (= transaction_count_proxy), shift_demand_units, shift_share_of_day."
+comp.v_PlanningWeekGrid,(view),VIEW,Derived,"One row per scenario x planning-week block: calendar/holiday context, planning-time weather and promotion features, shift definition, demand multiplier, draft schedule (draft_scheduled_employees, draft_scheduled_labor_hours), availability, cost rates and service target. Contains no demand - teams forecast it."
+API.DimCalendarDay / API.DimHolidayDay,(planning-week rows),rows,Forecast,"Planning week 2026-02-12 to 02-18, same column logic as the history. Includes Valentine's Day (Sat 02-14, Observance) and Presidents' Day (Mon 02-16, Federal Holiday, warehouse open). Window roles: Pre_Presidents_Day_Weekend (02-13 to 02-15), Presidents_Day_Holiday (02-16); 02-17 flagged is_post_holiday_rebound."
+API.FactDailyFeatures,(planning-week rows),rows,Forecast,"Planning-week features, dataset_partition = 'test' (history rows are 'train'). Same formulas as the history; markdown fields use week-6 sales as the planning basis; temperature is the planning-time forecast. Returned by API.v_ebm_test_features_model_only."
+model.ModelRun,(benchmark run),row,Forecast,model_run_id 2026021101: Naive Same-Weekday Benchmark.
+src.FactDailyPrediction,(planning-week rows),rows,Forecast,"model_run_id 2026021101: average of the same weekday in weeks 3-6 for every predicted_* column, banded with API.LaborBandRule. Deliberately ignores holidays, promotions and weather - teams should beat it."

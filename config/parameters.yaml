@@ -1,0 +1,42 @@
+# Core 3 Inc. - planning parameters
+# Leo: edit this file to change forecast and staffing assumptions. Every number here is an
+# assumption we state in the deck. Leave a value as `auto` to have the engine estimate it from history.
+
+team_id: "Core 3 Inc."
+
+forecast:
+  # Baseline = average of the same weekday over "Normal" days (no holiday window) from these weeks.
+  baseline_weeks: [2, 3, 4, 5, 6]
+  # Holiday lifts are multipliers on the baseline, by department (38 Front End, 92 Merchandising, 95 Pharmacy).
+  # `auto` = estimated from the MLK analog in history:
+  #   pre_holiday_weekend  <- Pre_MLK_Weekend (Jan 16-18)  -> applied to Feb 13-15
+  #   holiday              <- MLK_Holiday (Jan 19)          -> applied to Feb 16
+  #   post_holiday_rebound <- Jan 20 (flagged rebound day)  -> applied to Feb 17
+  holiday_lifts: auto
+  # Extra multiplier for Valentine's Day (Sat Feb 14) on top of the pre-holiday-weekend lift.
+  # No historical analog exists, so this is a pure judgment call. 1.00 = no extra effect.
+  valentines_extra:
+    38: 1.00
+    92: 1.00
+    95: 1.00
+
+staffing:
+  # Rule-based mode: schedule so projected utilization lands at or below this value.
+  # History shows service collapses above ~0.85 in every department.
+  target_utilization:
+    38: 0.80
+    92: 0.80
+    95: 0.80
+  # Callout buffer: `auto` = historical callout rate by department and weekday/weekend.
+  callout_rates: auto
+  # Share of callouts that get backfilled with overtime (ASSUMPTIONS.md section 3 says about half).
+  backfill_rate: 0.5
+  # Optimizer mode (Option B): cheapest plan whose expected share of blocks meeting target reaches
+  # portfolio_service_target. If the target is unreachable (PEAK/DISRUPT capacity limits), the optimizer
+  # stops when no move adds meaningful service. block_service_floor forces every block up to a minimum
+  # probability first; 0 = off (testing showed a floor wastes money on blocks capacity can't fix).
+  portfolio_service_target: 0.99
+  block_service_floor: 0.0
+  # Never abandon a block: every block is first staffed until projected utilization <= this ceiling
+  # (or it hits capacity). History: above ~0.90 waits run 2-5x the target.
+  utilization_ceiling: 0.90

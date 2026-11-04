@@ -1,0 +1,28 @@
+dept_id,day_type,shift_code,shift_start_time,shift_end_time,paid_hours,is_open,min_staff,value_type,notes
+38,Saturday,EVE,16:00,18:30,2.5,1,4,Assumed,
+38,Saturday,MID,12:30,16:00,3.5,1,6,Assumed,
+38,Saturday,OPEN,08:30,12:30,4.0,1,5,Assumed,
+38,Sunday,EVE,16:00,18:30,2.5,1,4,Assumed,
+38,Sunday,MID,13:00,16:00,3.0,1,6,Assumed,
+38,Sunday,OPEN,09:00,13:00,4.0,1,4,Assumed,
+38,Weekday,EVE,17:00,21:00,4.0,1,5,Assumed,
+38,Weekday,MID,13:00,17:00,4.0,1,6,Assumed,
+38,Weekday,OPEN,09:00,13:00,4.0,1,4,Assumed,
+92,Saturday,EVE,14:00,18:30,4.5,1,3,Assumed,
+92,Saturday,MID,09:30,14:00,4.5,1,3,Assumed,
+92,Saturday,OPEN,04:00,09:30,5.5,1,6,Assumed,
+92,Sunday,EVE,14:00,18:30,4.5,1,3,Assumed,
+92,Sunday,MID,10:00,14:00,4.0,1,3,Assumed,
+92,Sunday,OPEN,05:00,10:00,5.0,1,5,Assumed,
+92,Weekday,EVE,15:00,21:00,6.0,1,4,Assumed,
+92,Weekday,MID,10:00,15:00,5.0,1,3,Assumed,
+92,Weekday,OPEN,04:00,10:00,6.0,1,6,Assumed,Pre-open replenishment and receiving.
+95,Saturday,EVE,,,0.0,0,0,Assumed,Pharmacy assumed closed Saturday evening.
+95,Saturday,MID,13:00,18:00,5.0,1,2,Assumed,
+95,Saturday,OPEN,09:00,13:00,4.0,1,2,Assumed,
+95,Sunday,EVE,,,0.0,0,0,Assumed,Pharmacy assumed open Sunday midday only.
+95,Sunday,MID,10:00,15:00,5.0,1,2,Assumed,
+95,Sunday,OPEN,,,0.0,0,0,Assumed,Pharmacy assumed open Sunday midday only.
+95,Weekday,EVE,16:00,19:30,3.5,1,2,Assumed,
+95,Weekday,MID,13:00,16:00,3.0,1,2,Assumed,
+95,Weekday,OPEN,09:30,13:00,3.5,1,2,Assumed,
