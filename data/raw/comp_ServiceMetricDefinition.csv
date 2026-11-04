@@ -1,0 +1,4 @@
+metric_code,dept_id,metric_name,unit_of_measure,target_value,better_direction,definition,value_type
+FE_CHECKOUT_WAIT,38,Average checkout wait time,minutes,5,Lower,"Mean minutes a member waits in the checkout line before service begins, averaged across the shift block.",Assumed
+MS_REPLEN_RESPONSE,92,Average replenishment response time,minutes,60,Lower,"Mean minutes from a low-stock / empty-slot signal to the slot being replenished, averaged across the shift block.",Assumed
+RX_WAIT,95,Average prescription / service wait time,minutes,20,Lower,"Mean minutes from prescription drop-off (or service request) to ready-for-pickup, averaged across the shift block.",Assumed

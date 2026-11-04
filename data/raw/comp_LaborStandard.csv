@@ -1,0 +1,4 @@
+dept_id,workload_unit_definition,labor_hours_per_workload_unit,standard_basis,value_type
+38,Front End workload unit (scaled checkout-transaction proxy; not a literal transaction count),1.5,Labor hours needed per workload unit at 100% productive time. Does not include idle/buffer time.,Assumed
+92,Merchandising workload unit (scaled sales-driven replenishment proxy),1.2,Labor hours needed per workload unit at 100% productive time. Does not include idle/buffer time.,Assumed
+95,Pharmacy workload unit (scaled prescription/service-request proxy),0.165,Blended pharmacist + technician labor hours per workload unit at 100% productive time.,Assumed

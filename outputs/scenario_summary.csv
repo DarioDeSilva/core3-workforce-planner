@@ -1,0 +1,4 @@
+scenario_code,blocks,rec_cost,draft_cost,rec_hours,draft_hours,rec_expected_blocks_meeting,draft_expected_blocks_meeting,rec_high_risk,draft_high_risk,rec_infeasible,draft_infeasible,rec_ot_people,rec_flex_people,rec_pct_meeting,draft_pct_meeting,cost_change,cost_change_pct
+BASE,180,374787.69,329108.18,11600.0,10344.0,178.201,111.454,0,72,0,0,241,18,0.99,0.619,45679.51,0.139
+DISRUPT,180,371427.97,326367.23,11399.0,10344.0,167.341,110.171,12,73,0,12,269,12,0.93,0.612,45060.74,0.138
+PEAK,180,393381.52,329108.18,12046.0,10344.0,161.159,99.773,19,81,0,0,324,10,0.895,0.554,64273.34,0.195
