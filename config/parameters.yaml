@@ -15,6 +15,8 @@ forecast:
   holiday_lifts: auto
   # Extra multiplier for Valentine's Day (Sat Feb 14) on top of the pre-holiday-weekend lift.
   # No historical analog exists, so this is a pure judgment call. 1.00 = no extra effect.
+  # Sensitivity: scale every holiday lift's effect. 1.0 = same as the MLK analog; 0.8 = 20% weaker; 1.2 = stronger.
+  holiday_lift_scale: 1.0
   valentines_extra:
     38: 1.00
     92: 1.00
@@ -40,3 +42,9 @@ staffing:
   # Never abandon a block: every block is first staffed until projected utilization <= this ceiling
   # (or it hits capacity). History: above ~0.90 waits run 2-5x the target.
   utilization_ceiling: 0.90
+  # Optional: a separate service goal per department, e.g. {38: 0.99, 92: 0.95, 95: 0.99}. null = one goal above.
+  service_target_by_dept: null
+  # What the optimizer maximizes: pass_rate (chance each shift hits target) or wait_time (expected minutes vs target).
+  objective: pass_rate
+  # Budget mode only (planning method "budget"): weekly labor budget per scenario in dollars.
+  budget: null

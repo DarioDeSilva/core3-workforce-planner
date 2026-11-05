@@ -9,11 +9,28 @@ A proof-of-concept tool a warehouse leader can use to pick a scenario and see **
 | Scenario | Our cost | Draft cost | Shifts expected to meet target (ours / draft) | High-risk shifts (ours / draft) |
 |---|---|---|---|---|
 | BASE | $374,788 | $329,108 | 99% / 62% | 0 / 72 |
-| PEAK | $393,382 | $329,108 | 90% / 55% | 19 / 81 |
-| DISRUPT | $371,428 | $326,367 | 93% / 61% | 12 / 73 (draft has 12 infeasible shifts) |
+| PEAK | $392,669 | $329,108 | 89% / 55% | 21 / 81 |
+| DISRUPT | $370,978 | $326,367 | 93% / 61% | 13 / 73 (draft has 12 infeasible shifts) |
 
 On the cost-vs-service curve, BASE reaches 80% of shifts on target for ~$336K (about 2% above the draft) 98% for ~$364K (+11%), and 99% for ~$375K (+14%).
 Remaining PEAK/DISRUPT risk is in shifts that are already at capacity. Numbers come from `outputs/`; rerun the engine after changing any assumption.
+
+## What the tool does
+
+| Tab | What a warehouse leader gets |
+|---|---|
+| Staffing plan | Recommended staff per shift vs the draft, colored by chance of hitting target. One department, or the **whole warehouse** (all departments × shifts × days). |
+| What changed | The difference between two scenarios (e.g. BASE → PEAK) as a list of actions: "W4 Front End Fri 02-13 EVE: add 2 (+1 overtime, +1 borrowed from Merch), +$272". Filter to shifts directly affected. |
+| Re-plan | Mid-week: enter traffic vs forecast and extra callouts; the shifts already worked stay locked and the rest of the week is re-optimized. |
+| Plan vs draft | Cost and service by warehouse/department, average wait vs target, biggest changes with reasons. |
+| Service risk & actions | Shifts still at risk and what to do about them. |
+| Explain a shift | The full chain from forecast to staffing, cost and service, plus a chart of service vs headcount. |
+| Cost vs service | Cheapest plan for each service goal, with the draft and this plan marked. |
+| Method | How it works, forecast accuracy chart, glossary. |
+
+Sidebar options: planning method (**Optimizer**, **Budget**: best service for a weekly budget, or **Rule of thumb**), service goal (one goal or **one per department**), and assumptions (busyness ceiling, backfill, **holiday effect strength**, Valentine's effect, **optimize for shifts hitting target or shorter average waits**). Downloads: submission CSV, full plan, and a **printable schedule** per warehouse (HTML → print to PDF, one page per day).
+
+With default settings the app opens instantly from `outputs/app_cache.pkl` (written by `scripts/run_plan.py`); any change recomputes live.
 
 ## How it works
 

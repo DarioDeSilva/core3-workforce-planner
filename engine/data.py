@@ -4,6 +4,8 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
+import json
+
 import pandas as pd
 import yaml
 
@@ -50,8 +52,17 @@ def load_params(path: Path | str = CONFIG) -> dict:
     with open(path) as f:
         p = yaml.safe_load(f)
     # YAML keys like 38 load as ints already; make sure nested dicts use int keys
-    for sect, key in [("forecast", "valentines_extra"), ("staffing", "target_utilization")]:
+    for sect, key in [("forecast", "valentines_extra"), ("staffing", "target_utilization"),
+                      ("staffing", "service_target_by_dept")]:
         d = p[sect].get(key)
         if isinstance(d, dict):
             p[sect][key] = {int(k): float(v) for k, v in d.items()}
     return p
+
+
+APP_CACHE = OUTPUTS / "app_cache.pkl"
+
+
+def canonical_key(params: dict, mode: str) -> str:
+    """Stable fingerprint of the settings a plan was built with (used to reuse a precomputed plan)."""
+    return json.dumps(params, sort_keys=True, default=str) + "|" + mode

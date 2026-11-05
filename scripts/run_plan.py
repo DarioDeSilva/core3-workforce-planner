@@ -8,12 +8,15 @@ Writes:
     outputs/scenario_summary.csv     cost and service vs the draft, by scenario
     outputs/Core3Inc_submission.csv  the competition template, filled in
     outputs/cost_service_frontier.csv  (with --frontier) cost vs service curve per scenario
+    outputs/app_cache.pkl            full plan for the app's instant first load (default settings only)
 """
 from __future__ import annotations
 
 import argparse
 import sys
 from pathlib import Path
+
+import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -53,8 +56,9 @@ def main():
     sub = make_submission(plan, params["team_id"])
     problems = validate(sub, plan)
     sub.to_csv(data.OUTPUTS / "Core3Inc_submission.csv", index=False)
+    # full plan + the settings it was built with, so the app can open instantly with default settings
+    pd.to_pickle({"key": data.canonical_key(params, args.mode), "plan": plan}, data.APP_CACHE)
     if args.frontier:
-        import pandas as pd
         backfill = float(params["staffing"].get("backfill_rate", 0.5))
         fr = pd.concat([frontier(prepared[prepared.scenario_code == sc], model, backfill).assign(scenario_code=sc)
                         for sc in ["BASE", "PEAK", "DISRUPT"]])
