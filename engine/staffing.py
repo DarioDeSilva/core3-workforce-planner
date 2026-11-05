@@ -2,6 +2,7 @@
 
 Two modes:
 * "rule"      (Option A) required worked staff at a target utilization, plus a callout buffer.
+* "budget"    same optimizer, but spends up to a weekly budget instead of stopping at a service goal.
 * "optimizer" (Option B) cost-minimizing allocation (engine/optimizer.py): cheapest plan whose expected
                 share of blocks meeting target reaches the portfolio target, with a per-block floor.
 Both modes respect minimum staff and each block's capacity, where Front End and Merchandising share
@@ -62,11 +63,17 @@ def build_plan(params: dict, mode: str = "optimizer", scenarios=("BASE", "PEAK",
         for _ in range(2):  # respect joint FE/Merch capacity
             df["recommended_employees"] = np.minimum(df.recommended_employees, capacity(df, "recommended_employees")).astype(int)
     else:
-        df["recommended_employees"] = optimize(
+        budget = sp.get("budget") if mode == "budget" else None
+        rec = optimize(
             df, model, backfill, float(sp.get("portfolio_service_target", 0.99)),
             float(sp.get("block_service_floor", 0.0)),
-            util_ceiling=float(sp.get("utilization_ceiling", 0.90))).astype(int)
+            util_ceiling=float(sp.get("utilization_ceiling", 0.90)),
+            dept_targets=sp.get("service_target_by_dept") or None,
+            budget=budget, objective=sp.get("objective", "pass_rate"))
+        df["recommended_employees"] = rec.astype(int)
         df["required_employees"] = df.recommended_employees
+        short = rec.attrs.get("budget_shortfall", {})
+        df["budget_min_cost"] = df.scenario_code.map(short) if short else np.nan
     df["capacity_shortfall"] = (df.required_employees - df.recommended_employees).clip(lower=0)
 
     df = cost_plan(df, "recommended_employees", "rec")
@@ -87,10 +94,16 @@ def explain(r, mode: str, sp: dict) -> str:
         parts.append(f"holiday lift x{r.holiday_lift:.2f}")
     if r.demand_multiplier != 1:
         parts.append(f"scenario demand x{r.demand_multiplier:.2f}")
-    if mode == "rule":
+    if mode == "budget":
+        parts.append(f"best use of the weekly budget; {r.rec_p_meet:.0%} chance of meeting target after callouts")
+    elif mode == "rule":
         parts.append(f"staffed to {sp['target_utilization'][int(r.dept_id)]:.2f} utilization + {r.p_callout:.0%} callout buffer")
     else:
-        parts.append(f"cheapest headcount in the optimized plan; {r.rec_p_meet:.0%} chance of meeting target after callouts")
+        goals = sp.get("service_target_by_dept") or {}
+        goal = goals.get(int(r.dept_id), sp.get("portfolio_service_target", 0.99))
+        what = "department" if goals else "overall"
+        parts.append(f"cheapest headcount that reaches the {goal:.0%} {what} service goal; "
+                     f"{r.rec_p_meet:.0%} chance of meeting target after callouts")
     if r.recommended_employees == r.min_staff:
         parts.append("at minimum staff")
     if r.rec_flex > 0:
