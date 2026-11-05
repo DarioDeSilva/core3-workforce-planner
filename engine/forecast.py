@@ -69,6 +69,7 @@ def forecast_blocks(params: dict, h: pd.DataFrame | None = None, g: pd.DataFrame
     if lifts in (None, "auto"):
         lifts = estimate_lifts(h, fp["baseline_weeks"])
     vday = fp.get("valentines_extra") or {}
+    lift_scale = float(fp.get("holiday_lift_scale", 1.0))
 
     days = g[g.scenario_code == "BASE"][["store_id", "dept_id", "day_date", "day_name", "day_type",
                                           "holiday_window_role", "is_post_holiday_rebound"]].drop_duplicates()
@@ -83,6 +84,8 @@ def forecast_blocks(params: dict, h: pd.DataFrame | None = None, g: pd.DataFrame
             m = lifts["post_holiday_rebound"].get(r.dept_id, 1.0)
         else:
             m = 1.0
+        if lift_scale != 1.0 and m != 1.0:  # sensitivity: weaker/stronger holiday effect than MLK
+            m = 1 + (m - 1) * lift_scale
         if r.day_date == VALENTINES:
             m *= vday.get(r.dept_id, 1.0)
         return m
