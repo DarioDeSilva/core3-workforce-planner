@@ -37,8 +37,8 @@ Context for Claude Code sessions working in this repo. Read this before changing
 | Scenario | Our cost | Draft cost | Shifts meeting target (ours / draft) | High-risk (ours / draft) |
 |---|---|---|---|---|
 | BASE | $374,788 | $329,108 | 99% / 62% | 0 / 72 |
-| PEAK | $393,382 | $329,108 | 90% / 55% | 19 / 81 |
-| DISRUPT | $371,428 | $326,367 | 93% / 61% | 12 / 73 |
+| PEAK | $392,669 | $329,108 | 89% / 55% | 21 / 81 |
+| DISRUPT | $370,978 | $326,367 | 93% / 61% | 13 / 73 |
 - BASE cost-vs-service curve: 80% ≈ $336K, 98% ≈ $364K, 99% ≈ $375K. Remaining PEAK/DISRUPT risk is in blocks already at capacity.
 - Forecast backtest (held-out weeks 5–6): 4.6% shift-level MAPE vs 7.7% naive.
 - All 567 submission rows feasible; costs cross-checked independently.
@@ -86,8 +86,10 @@ heatmap, plain-language labels + glossary, forecast-accuracy chart, holiday-lift
 wait-time objective, printable schedule, visual fixes. Every option is OFF in `config/parameters.yaml` by default, so the
 submission and headline numbers are unchanged. Optimizer options only change the Phase 2 stop rule / eligibility / value table.
 - Known behavior: the 99% goal is week-wide, so a scenario can shift staff on unaffected days ("rebalanced" in What changed).
-  In PEAK, a few hopeless shifts (e.g. W1 Front End Fri MID) can lose a borrowed person to Merchandising because
-  it buys more service there. Raise with Dario before changing; it would change the submission.
+- "Never abandon a shift" (Nov 5): once Phase 0 staffs a shift to a safe level, the optimizer may not pull a borrowed person
+  back out of it. Before this, PEAK W1 Front End Fri MID lost a borrowed person on the surge day. Trade-off: PEAK 89.5% ->
+  88.9% of shifts on target, DISRUPT 93.0% -> 92.7%, slightly cheaper. Remaining DISRUPT cuts vs BASE are forced by illness
+  (at capacity) except W2 Merch Fri lending staff to the sick W2 Front End.
 
 ## Ideas not built yet
 Per-shift override (manager pins a number and the optimizer plans around it); multi-week horizon; export to a scheduling system.

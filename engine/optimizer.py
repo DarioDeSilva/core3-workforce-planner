@@ -9,6 +9,9 @@ Problem, per scenario:
 Options (all off by default): per-department goals, a weekly budget instead of a goal, and a wait-time
 objective instead of pass rate. They change only the Phase 2 stop rule / eligibility / value table.
 
+Never abandon a shift: once Phase 0 has staffed a shift to a safe level, later moves can add people anywhere but
+cannot pull a borrowed person back out of it (so a surge shift never loses staff to help another shift).
+
 Method: (0) staff every block at least to a utilization ceiling (or capacity) so no block is abandoned;
 then greedy marginal analysis. P(meet) per block is precomputed for every headcount (averaging over
 random callouts). Starting from minimum staff, we (1) raise every block to the floor, then (2) keep adding
@@ -124,6 +127,7 @@ def _optimize_scenario(sdf, model, backfill, portfolio_target, block_floor, max_
             unit_of[r["idx"]] = (u, j)
 
     n = {i: r["min"] for i, r in rows.items()}
+    floor = {}  # filled after Phase 0/1
     open_rows = [i for i, r in rows.items() if not r["closed"]]
 
     def p_of(i, k):
@@ -158,8 +162,8 @@ def _optimize_scenario(sdf, model, backfill, portfolio_target, block_floor, max_
             spare_from_i = max(r["reg"] - min(ns2[j], r["reg"]), 0)
             cap_p = pr["reg"] + pr["ot"] + min(pr["flex"], spare_from_i)
             if ns2[q] > cap_p:
-                if cap_p < pr["min"]:
-                    return None
+                if cap_p < max(pr["min"], floor.get(pi, 0)):
+                    return None  # never take people away from a shift below its safe (Phase 0) staffing
                 changes[pi] = cap_p - ns2[q]
                 gain += v_of(pi, cap_p) - v_of(pi, ns2[q])
                 ns2[q] = cap_p
@@ -199,6 +203,10 @@ def _optimize_scenario(sdf, model, backfill, portfolio_target, block_floor, max_
             if m is None or m[0] <= 0:
                 break
             apply(m[2])
+
+    # Lock in Phase 0/1 staffing as a floor: later moves may add people anywhere, but may not pull a
+    # borrowed person back out of a shift that already needed them to stay safe.
+    floor.update(n)
 
     def total_cost():
         return sum(u.cost_ok([n[x["idx"]] for x in u.rows])[0] for u in units)

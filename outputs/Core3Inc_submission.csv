@@ -192,7 +192,7 @@ Core 3 Inc.,2,PEAK,1,38,Front End,2026-02-12,Thursday,EVE,1,5,19,18
 Core 3 Inc.,2,PEAK,1,38,Front End,2026-02-12,Thursday,MID,1,6,20,19
 Core 3 Inc.,2,PEAK,1,38,Front End,2026-02-12,Thursday,OPEN,1,4,11,11
 Core 3 Inc.,2,PEAK,1,38,Front End,2026-02-13,Friday,EVE,1,5,23,26
-Core 3 Inc.,2,PEAK,1,38,Front End,2026-02-13,Friday,MID,1,6,26,27
+Core 3 Inc.,2,PEAK,1,38,Front End,2026-02-13,Friday,MID,1,6,26,28
 Core 3 Inc.,2,PEAK,1,38,Front End,2026-02-13,Friday,OPEN,1,4,13,15
 Core 3 Inc.,2,PEAK,1,38,Front End,2026-02-14,Saturday,EVE,1,4,24,28
 Core 3 Inc.,2,PEAK,1,38,Front End,2026-02-14,Saturday,MID,1,6,29,34
@@ -213,7 +213,7 @@ Core 3 Inc.,2,PEAK,1,92,Merchandising/Stocking,2026-02-12,Thursday,EVE,1,4,9,10
 Core 3 Inc.,2,PEAK,1,92,Merchandising/Stocking,2026-02-12,Thursday,MID,1,3,9,10
 Core 3 Inc.,2,PEAK,1,92,Merchandising/Stocking,2026-02-12,Thursday,OPEN,1,6,13,15
 Core 3 Inc.,2,PEAK,1,92,Merchandising/Stocking,2026-02-13,Friday,EVE,1,4,10,14
-Core 3 Inc.,2,PEAK,1,92,Merchandising/Stocking,2026-02-13,Friday,MID,1,3,10,14
+Core 3 Inc.,2,PEAK,1,92,Merchandising/Stocking,2026-02-13,Friday,MID,1,3,10,12
 Core 3 Inc.,2,PEAK,1,92,Merchandising/Stocking,2026-02-13,Friday,OPEN,1,6,15,22
 Core 3 Inc.,2,PEAK,1,92,Merchandising/Stocking,2026-02-14,Saturday,EVE,1,3,10,11
 Core 3 Inc.,2,PEAK,1,92,Merchandising/Stocking,2026-02-14,Saturday,MID,1,3,13,18
@@ -255,7 +255,7 @@ Core 3 Inc.,2,PEAK,2,38,Front End,2026-02-12,Thursday,EVE,1,5,21,23
 Core 3 Inc.,2,PEAK,2,38,Front End,2026-02-12,Thursday,MID,1,6,22,23
 Core 3 Inc.,2,PEAK,2,38,Front End,2026-02-12,Thursday,OPEN,1,4,12,14
 Core 3 Inc.,2,PEAK,2,38,Front End,2026-02-13,Friday,EVE,1,5,26,32
-Core 3 Inc.,2,PEAK,2,38,Front End,2026-02-13,Friday,MID,1,6,28,34
+Core 3 Inc.,2,PEAK,2,38,Front End,2026-02-13,Friday,MID,1,6,28,35
 Core 3 Inc.,2,PEAK,2,38,Front End,2026-02-13,Friday,OPEN,1,4,15,20
 Core 3 Inc.,2,PEAK,2,38,Front End,2026-02-14,Saturday,EVE,1,4,24,32
 Core 3 Inc.,2,PEAK,2,38,Front End,2026-02-14,Saturday,MID,1,6,31,45
@@ -276,7 +276,7 @@ Core 3 Inc.,2,PEAK,2,92,Merchandising/Stocking,2026-02-12,Thursday,EVE,1,4,11,12
 Core 3 Inc.,2,PEAK,2,92,Merchandising/Stocking,2026-02-12,Thursday,MID,1,3,11,12
 Core 3 Inc.,2,PEAK,2,92,Merchandising/Stocking,2026-02-12,Thursday,OPEN,1,6,17,17
 Core 3 Inc.,2,PEAK,2,92,Merchandising/Stocking,2026-02-13,Friday,EVE,1,4,13,16
-Core 3 Inc.,2,PEAK,2,92,Merchandising/Stocking,2026-02-13,Friday,MID,1,3,12,17
+Core 3 Inc.,2,PEAK,2,92,Merchandising/Stocking,2026-02-13,Friday,MID,1,3,12,15
 Core 3 Inc.,2,PEAK,2,92,Merchandising/Stocking,2026-02-13,Friday,OPEN,1,6,19,27
 Core 3 Inc.,2,PEAK,2,92,Merchandising/Stocking,2026-02-14,Saturday,EVE,1,3,13,16
 Core 3 Inc.,2,PEAK,2,92,Merchandising/Stocking,2026-02-14,Saturday,MID,1,3,17,19
@@ -318,7 +318,7 @@ Core 3 Inc.,2,PEAK,4,38,Front End,2026-02-12,Thursday,EVE,1,5,22,23
 Core 3 Inc.,2,PEAK,4,38,Front End,2026-02-12,Thursday,MID,1,6,22,24
 Core 3 Inc.,2,PEAK,4,38,Front End,2026-02-12,Thursday,OPEN,1,4,13,14
 Core 3 Inc.,2,PEAK,4,38,Front End,2026-02-13,Friday,EVE,1,5,26,32
-Core 3 Inc.,2,PEAK,4,38,Front End,2026-02-13,Friday,MID,1,6,29,34
+Core 3 Inc.,2,PEAK,4,38,Front End,2026-02-13,Friday,MID,1,6,29,35
 Core 3 Inc.,2,PEAK,4,38,Front End,2026-02-13,Friday,OPEN,1,4,16,21
 Core 3 Inc.,2,PEAK,4,38,Front End,2026-02-14,Saturday,EVE,1,4,30,35
 Core 3 Inc.,2,PEAK,4,38,Front End,2026-02-14,Saturday,MID,1,6,39,50
@@ -339,7 +339,7 @@ Core 3 Inc.,2,PEAK,4,92,Merchandising/Stocking,2026-02-12,Thursday,EVE,1,4,10,12
 Core 3 Inc.,2,PEAK,4,92,Merchandising/Stocking,2026-02-12,Thursday,MID,1,3,11,12
 Core 3 Inc.,2,PEAK,4,92,Merchandising/Stocking,2026-02-12,Thursday,OPEN,1,6,19,17
 Core 3 Inc.,2,PEAK,4,92,Merchandising/Stocking,2026-02-13,Friday,EVE,1,4,11,17
-Core 3 Inc.,2,PEAK,4,92,Merchandising/Stocking,2026-02-13,Friday,MID,1,3,13,17
+Core 3 Inc.,2,PEAK,4,92,Merchandising/Stocking,2026-02-13,Friday,MID,1,3,13,15
 Core 3 Inc.,2,PEAK,4,92,Merchandising/Stocking,2026-02-13,Friday,OPEN,1,6,22,27
 Core 3 Inc.,2,PEAK,4,92,Merchandising/Stocking,2026-02-14,Saturday,EVE,1,3,11,14
 Core 3 Inc.,2,PEAK,4,92,Merchandising/Stocking,2026-02-14,Saturday,MID,1,3,15,18
@@ -443,9 +443,9 @@ Core 3 Inc.,3,DISRUPT,1,95,Pharmacy,2026-02-18,Wednesday,OPEN,1,2,4,5
 Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-12,Thursday,EVE,1,5,21,23
 Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-12,Thursday,MID,1,6,22,23
 Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-12,Thursday,OPEN,1,4,12,14
-Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-13,Friday,EVE,1,5,26,21
+Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-13,Friday,EVE,1,5,26,22
 Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-13,Friday,MID,1,6,28,23
-Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-13,Friday,OPEN,1,4,15,13
+Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-13,Friday,OPEN,1,4,15,15
 Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-14,Saturday,EVE,1,4,24,20
 Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-14,Saturday,MID,1,6,31,29
 Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-14,Saturday,OPEN,1,5,27,21
@@ -464,9 +464,9 @@ Core 3 Inc.,3,DISRUPT,2,38,Front End,2026-02-18,Wednesday,OPEN,1,4,11,13
 Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-12,Thursday,EVE,1,4,11,12
 Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-12,Thursday,MID,1,3,11,12
 Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-12,Thursday,OPEN,1,6,17,17
-Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-13,Friday,EVE,1,4,13,15
+Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-13,Friday,EVE,1,4,13,13
 Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-13,Friday,MID,1,3,12,15
-Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-13,Friday,OPEN,1,6,19,22
+Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-13,Friday,OPEN,1,6,19,20
 Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-14,Saturday,EVE,1,3,13,15
 Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-14,Saturday,MID,1,3,17,19
 Core 3 Inc.,3,DISRUPT,2,92,Merchandising/Stocking,2026-02-14,Saturday,OPEN,1,6,22,25

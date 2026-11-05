@@ -70,11 +70,13 @@ def diff_plans(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
     shift_key = list(zip(out.store_id, out.day_date, out.shift_code))
     direct_shifts = {k for k, d in zip(shift_key, out.direct) if d}
     reasons = []
-    for k, d, dept in zip(shift_key, direct, out.dept_id):
+    for k, d, dept, chg in zip(shift_key, direct, out.dept_id, out.change):
         if d:
             reasons.append("; ".join(d))
         elif int(dept) in PARTNER_NAME and k in direct_shifts:
-            reasons.append(f"knock-on: {PARTNER_NAME[int(dept)]} took back or lent cross-trained staff this shift")
+            partner = PARTNER_NAME[int(dept)]
+            reasons.append(f"knock-on: lends cross-trained staff to {partner}, which is hit by the scenario" if chg < 0
+                           else f"knock-on: {partner} needs fewer of the cross-trained staff it borrowed")
         else:
             reasons.append("rebalanced: the week-wide service goal moves staff to where each dollar buys the most service")
     out["reason"] = reasons

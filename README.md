@@ -9,8 +9,8 @@ A proof-of-concept tool a warehouse leader can use to pick a scenario and see **
 | Scenario | Our cost | Draft cost | Shifts expected to meet target (ours / draft) | High-risk shifts (ours / draft) |
 |---|---|---|---|---|
 | BASE | $374,788 | $329,108 | 99% / 62% | 0 / 72 |
-| PEAK | $393,382 | $329,108 | 90% / 55% | 19 / 81 |
-| DISRUPT | $371,428 | $326,367 | 93% / 61% | 12 / 73 (draft has 12 infeasible shifts) |
+| PEAK | $392,669 | $329,108 | 89% / 55% | 21 / 81 |
+| DISRUPT | $370,978 | $326,367 | 93% / 61% | 13 / 73 (draft has 12 infeasible shifts) |
 
 On the cost-vs-service curve, BASE reaches 80% of shifts on target for ~$336K (about 2% above the draft) 98% for ~$364K (+11%), and 99% for ~$375K (+14%).
 Remaining PEAK/DISRUPT risk is in shifts that are already at capacity. Numbers come from `outputs/`; rerun the engine after changing any assumption.
