@@ -49,7 +49,7 @@ table {{ border-collapse: collapse; width: 100%; font-size: 13px; }}
 th, td {{ border: 1px solid #bbb; padding: 5px 8px; text-align: left; }}
 th {{ background: #eee; }} td.num {{ text-align: right; }} tr.closed td {{ color: #888; }}
 td.note {{ color: #b71c1c; font-weight: 600; }}
-.day {{ page-break-after: always; }} .day:last-child {{ page-break-after: auto; }}
+.day + .day {{ page-break-before: always; }}
 @media print {{ body {{ margin: 10mm; }} }}
 </style></head><body>
 <h1>{html.escape(title)}</h1><div class="sub">{html.escape(subtitle)}</div>"""]
