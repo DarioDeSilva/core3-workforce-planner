@@ -54,8 +54,11 @@ engine/optimizer.py       greedy optimizer: Phase 0 staff every block to util �
 engine/costing.py         official cost rule, partner spare, capacity, feasibility
 engine/staffing.py        prepare(), build_plan(mode), score_service(), explain() plain-English "why", summarize()
 engine/submission.py      fill + validate the 567-row template
+engine/compare.py         diff_plans()/diff_scenarios(): what changed between two plans, as manager actions (direct / knock-on / rebalanced)
+engine/replan.py          replan(): lock shifts before as_of, apply traffic % / extra callouts, re-optimize the rest, diff
+engine/schedule.py        posting_schedule() + schedule_html(): printable per-warehouse schedule
 config/parameters.yaml    every assumption (Leo edits this)
-scripts/run_plan.py       regenerate outputs (`--mode rule|optimizer`, `--frontier`)
+scripts/run_plan.py       regenerate outputs (`--mode rule|optimizer`, `--frontier`); also writes outputs/app_cache.pkl for instant app load
 scripts/backtest.py       forecast accuracy + lifts
 outputs/                  plan_by_block.csv (Tableau source), scenario_summary.csv, cost_service_frontier.csv, Core3Inc_submission.csv
 data/raw/                 case CSVs, unchanged
@@ -68,6 +71,7 @@ python scripts/run_plan.py --frontier   # regenerate all outputs (~15 s)
 python scripts/backtest.py
 streamlit run app.py
 ```
+Use a venv: `python3 -m venv .venv && .venv/bin/pip install -r requirements.txt` (`.venv/` is gitignored).
 
 ## Working rules
 - **Single source of truth:** every number in the deck, tool and submission comes from the engine via `outputs/`. After any engine/config change, rerun `scripts/run_plan.py --frontier` and commit the outputs.
@@ -76,13 +80,17 @@ streamlit run app.py
 - Streamlit: use `width="stretch"` (not deprecated `use_container_width`); escape `$` in markdown text (`money_md`).
 - Keep explanations plain-English — judges and warehouse managers are the audience.
 
-## Backlog (priority order)
-1. **"What changed?" action list** between scenarios (e.g., "W4 FE Fri MID: +6 (4 OT, 2 cross-trained), +$1,050") — answers PDF p.4–5 "what actions when conditions change."
-2. **Mid-week re-plan panel:** enter actual traffic deviation / callouts → re-optimize remaining shifts and show changes. Best live-demo moment.
-3. **Faster first load:** precompute default plans so a cold app opens fast.
-4. Whole-warehouse GM view (all 3 depts × 7 days, colored by risk).
-5. Plain-language labels/tooltips; fix hard-to-read yellow heatmap cell in dark mode and the confusing "draft: 0" arrow.
-6. Forecast-accuracy chart in Method tab; holiday-lift slider; per-department service goals; budget mode; wait-time objective option (only if organizers score avg wait); printable schedule.
+## Features added (Nov 4) and how they stay safe
+All 12 backlog items are built: What changed tab, Re-plan tab, instant load from `outputs/app_cache.pkl`, whole-warehouse
+heatmap, plain-language labels + glossary, forecast-accuracy chart, holiday-lift scale, per-department goals, budget mode,
+wait-time objective, printable schedule, visual fixes. Every option is OFF in `config/parameters.yaml` by default, so the
+submission and headline numbers are unchanged. Optimizer options only change the Phase 2 stop rule / eligibility / value table.
+- Known behavior: the 99% goal is week-wide, so a scenario can shift staff on unaffected days ("rebalanced" in What changed).
+  In PEAK, a few hopeless shifts (e.g. W1 Front End Fri MID) can lose a borrowed person to Merchandising because
+  it buys more service there. Raise with Dario before changing; it would change the submission.
+
+## Ideas not built yet
+Per-shift override (manager pins a number and the optimizer plans around it); multi-week horizon; export to a scheduling system.
 
 ## Open questions for organizers (sent/pending)
 Deadline + submission method; is service scored on submitted staff or after simulated callouts (affects the callout buffer); scored as % shifts meeting target vs average minutes (affects optimizer objective); `team_id`/file naming; live vs recorded demo; Q&A length; deck format; Valentine's effect intentionally judgment-based?
