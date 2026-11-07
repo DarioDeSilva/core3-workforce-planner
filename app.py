@@ -452,9 +452,12 @@ with tab_block:
                            float(sp["backfill_rate"]))[0] for n in ns]
     f = px.line(x=ns, y=ps, markers=True, labels={"x": "Employees scheduled", "y": "Chance of hitting target"},
                 title="How the chance of hitting target changes with staffing")
-    f.add_vline(x=b.recommended_employees, line_color="#1565c0", annotation_text="ours")
+    at_capacity = round(b.recommended_employees) == round(b.rec_capacity)
+    f.add_vline(x=b.recommended_employees, line_color="#1565c0",
+                annotation_text="ours = max available" if at_capacity else "ours")
     f.add_vline(x=b.draft_scheduled_employees, line_color="#9e9e9e", line_dash="dash", annotation_text="draft")
-    f.add_vline(x=b.rec_capacity, line_color="#c62828", line_dash="dot", annotation_text="max available")
+    if not at_capacity:
+        f.add_vline(x=b.rec_capacity, line_color="#c62828", line_dash="dot", annotation_text="max available")
     f.update_yaxes(tickformat=".0%", range=[0, 1.02])
     st.plotly_chart(f, width="stretch")
 
